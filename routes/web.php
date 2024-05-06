@@ -91,8 +91,8 @@ Route::controller(SampleController::class)->group(function(){
         Route::get('/get', [CategoryController::class, 'get'])->name('category.get');
         Route::post('/update', [CategoryController::class, 'update'])->name('category.update');
     });
-    //newuser
-    Route::group(['prefix' => '/categories'], function () {
+    //Categories
+    Route::group(['prefix' => '/newuser'], function () {
         Route::post('/create', [\App\Http\Controllers\PanelController::class, "create"])->name('create');
         Route::get('/list', [\App\Http\Controllers\PanelController::class, "list"])->name('list');
         Route::get('/fetch', [\App\Http\Controllers\PanelController::class, 'fetch'])->name('fetch');

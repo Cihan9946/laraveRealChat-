@@ -4,7 +4,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #E5E8E8;">
-                        <h5 class="modal-title" style="font-weight: bold; font-size: 25px !important; ">Rol
+                    <h5 class="modal-title" style="font-weight: bold; font-size: 25px !important; ">Rol
                         Güncelle</h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -13,16 +13,16 @@
                 <div class="modal-body" style="background-color: #F8F9F9; padding: 30px;">
                     <form id="update_category_post" method="post">
 
-                        <div class="row mt-3 mb-4">
-                            <div class="form-group mb-4 col-12">
-                                <label class="mb-1" for="category_name" style="text-decoration: underline;">Role
-                                    id </label>
-                                <input type="text" name="category_name" id="nameUpdate" class="form-control">
-                            </div>
+                        <div class="form-group mb-4 col-12">
+                            <input type="hidden" id="updateId">
+                            <label class="mb-1" for="role_id" style="text-decoration: underline;">Role ve ID</label>
+                            <select name="role_id" id="role_id" class="form-control">
+                                @foreach($roles as $role)
+                                    <option value="{{ $role->id }}">{{ $role->name }} - {{ $role->id }}</option>
+                                @endforeach
+                            </select>
 
                         </div>
-
-                        <input type="hidden" name="updateId" id="updateId">
 
                     </form>
                 </div>
@@ -40,7 +40,7 @@
             <div class="modal-content">
                 <div class="modal-header" style="background-color: #E5E8E8;">
                     <h5 class="modal-title" style="font-weight: bold; font-size: 25px !important; ">Role Güncelle
-                        </h5>
+                    </h5>
                     <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -167,6 +167,7 @@
         function updateCategoryPost() {
 
             var formData = new FormData(document.getElementById('update_category_post'));
+            formData.append('updateId',$('#updateId').val())
             $.ajax({
                 type: 'POST',
                 url: '{{route('update')}}',
@@ -220,8 +221,8 @@
                 data: {id: id},
                 success: function (data) {
 
-                    category_name.val(data.category_name);
-
+                    category_name.val(data.category_name[0]);
+                    $('#role_id').val(data.category_name[0])
                     $('#updateId').val(id);
 
                     $('#update_categories_modal').modal("toggle");
@@ -269,7 +270,7 @@
                 {data: 'name'},
                 {data: 'user_status'},
                 {data: 'email'},
-                {data: 'role_id'},
+                {data: 'role_name'},
                 {data: 'update'},
                 {data: 'delete'},
             ]

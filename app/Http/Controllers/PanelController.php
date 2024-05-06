@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Chat;
 use App\Models\Chat_request;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -93,16 +94,25 @@ class PanelController extends Controller
 
     public function list()
     {
-        return view('panel.newuser');
+        $roles = Role::all();
+        return view('panel.newuser', compact('roles'));
+
     }
 
     function fetch()
     {
-        $users = User::select('id', 'name', 'email', 'birim_id', 'user_status')->get();
-        return DataTables::of($users)
-            ->addColumn('role_id',function ($data){
-                return $data->getRoleNames()[0];
+        $users = User::select('users.id', 'users.name', 'users.email', 'users.birim_id', 'users.user_status', 'roles.name as role_name')
+            ->leftJoin('model_has_roles', function($join) {
+                $join->on('users.id', '=', 'model_has_roles.model_id')
+                    ->where('model_has_roles.model_type', '=', User::class);
             })
+            ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->get();
+
+
+
+        return DataTables::of($users)
+
             ->addColumn('update', function ($data) {
                 return "<button onclick='updateCategory(" . $data->id . ")' class='btn btn-warning'>Güncelle</button>";
             })->addColumn('delete', function ($data) {
@@ -121,25 +131,35 @@ class PanelController extends Controller
         User::find($request->id)->delete();
         return response()->json(['Success' => 'success']);
     }
-//Category
+
     function get(Request $request)
     {
-        $categories = User::where('id', $request->id)->first();
-        return response()->json(['category_name' => $categories->role_id]);
+        $user = User::find($request->id);
+        if($user){
+            $role_ids = collect();
+            foreach($user->getRoleNames() as $roleName){
+                $role_ids->push(DB::table('roles')->where('name',$roleName)->first()->id) ;
+            }
+            return response()->json(['category_name' => $role_ids]);
+        }else{
+            return response()->json(['category_name'=>null]);
+        }
     }
 
     function update(Request $request)
     {
         $request->validate([
-            'category_name' => 'required',
+            'role_id' => 'required|distinct|numeric',
         ]);
-        $categoryId = intval($request->category_name);
+        //$categoryId = intval($request->category_name);
 
         $user = User::find($request->updateId);
-        $user->syncRoles($categoryId);
+        if($user){
+            $role_name = Role::find($request->role_id)->name;
+            $user->syncRoles($role_name);
+        }
 
-
-       //dd($categoryId);
+        //dd($categoryId);
 
         return response()->json(['Success' => 'success']);
     }
