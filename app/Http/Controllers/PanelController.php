@@ -15,6 +15,7 @@ class PanelController extends Controller
 {
     public function index(){
 
+        
         $user = User::find(1);
 
         return view('panel.home');
