@@ -1,64 +1,88 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Laravel Live Chat Uygulaması
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Bu proje, Laravel framework kullanılarak geliştirilmiş bir canlı sohbet (live chat) uygulamasıdır. Bu uygulama, kullanıcıların gerçek zamanlı olarak birbirleriyle mesajlaşmasını sağlar ve basit bir şekilde entegre edilebilir.
 
-## About Laravel
+## Özellikler
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Gerçek Zamanlı Mesajlaşma**: Kullanıcılar arasında anında mesaj gönderimi ve alımı.
+- **Kullanıcı Doğrulama**: Laravel'in dahili kullanıcı doğrulama sistemiyle entegre.
+- **Oturum Yönetimi**: Oturum açan kullanıcılar, sohbet odalarına veya bireysel sohbetlere katılabilir.
+- **WebSocket Desteği**: Daha hızlı ve kesintisiz mesaj iletimi için WebSocket entegrasyonu.
+- **Responsive Arayüz**: Tüm cihazlarla uyumlu kullanıcı dostu arayüz.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Gereksinimler
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP >= 7.4
+- Laravel >= 8.x
+- MySQL veya benzeri bir veritabanı
+- Composer
+- Node.js ve NPM
 
-## Learning Laravel
+## Kurulum
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. **Proje Dosyalarını Klonlayın**:
+    ```bash
+    git clone https://github.com/kullanici_adi/laravel-live-chat.git
+    cd laravel-live-chat
+    ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2. **Gerekli Bağımlılıkları Kurun**:
+    ```bash
+    composer install
+    npm install
+    npm run dev
+    ```
 
-## Laravel Sponsors
+3. **.env Dosyasını Yapılandırın**:
+    Proje klasöründeki `.env.example` dosyasını `.env` olarak yeniden adlandırın ve aşağıdaki ayarları yapılandırın:
+    
+    ```bash
+    APP_NAME=LaravelLiveChat
+    APP_ENV=local
+    APP_KEY=base64:randomgeneratedkey=
+    APP_DEBUG=true
+    APP_URL=http://localhost
+    
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=live_chat_db
+    DB_USERNAME=root
+    DB_PASSWORD=yourpassword
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+4. **Veritabanı Migrasyonlarını Çalıştırın**:
+    ```bash
+    php artisan migrate
+    ```
 
-### Premium Partners
+5. **WebSocket Sunucusunu Başlatın**:
+    Laravel Echo Server veya benzeri bir WebSocket sunucusu kurduysanız, şu komutu çalıştırarak sunucuyu başlatın:
+    ```bash
+    php artisan serve
+    npm run websocket
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+6. **Uygulamayı Başlatın**:
+    Artık uygulama `http://localhost:8000` adresinde çalışır durumda olacaktır. Tarayıcınızda bu adresi ziyaret ederek canlı sohbet uygulamasını deneyebilirsiniz.
 
-## Contributing
+## Kullanım
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- Uygulamayı başlattıktan sonra, giriş yaparak veya yeni bir hesap oluşturarak sisteme giriş yapabilirsiniz.
+- Mesaj göndermek için herhangi bir kullanıcıya tıklayın veya yeni bir sohbet başlatın.
+- Gönderilen mesajlar anında diğer kullanıcıya iletilecektir.
 
-## Code of Conduct
+## Geliştirme
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **WebSocket Sunucusu**: `resources/js/bootstrap.js` dosyasındaki WebSocket ayarlarını ihtiyaçlarınıza göre özelleştirebilirsiniz.
+- **UI Özelleştirme**: `resources/views` dizinindeki Blade şablonlarıyla arayüzü kişiselleştirebilirsiniz.
+- **Yeni Özellikler**: Laravel'in güçlü ORM yapısı ve olaylar sistemi ile kolayca yeni özellikler ekleyebilirsiniz.
 
-## Security Vulnerabilities
+## Katkıda Bulunma
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Katkıda bulunmak isterseniz, lütfen bir fork yapın ve bir pull request gönderin. Katkılarınızdan memnuniyet duyarız!
 
-## License
+## Lisans
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Bu proje MIT lisansı altında lisanslanmıştır. Daha fazla bilgi için `LICENSE` dosyasını inceleyin.
+
